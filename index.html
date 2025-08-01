@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Slides</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source" style="width: 100%; height: 400px;" placeholder="Drag and drop a markdown file, or paste or markdown text here..."></textarea>
+    
+    <button id="start-slideshow">Start Slideshow</button>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+    <script>
+      // Drag-and-drop support for markdown files
+      const textarea = document.getElementById('source');
+      textarea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        textarea.style.border = '2px dashed #888';
+      });
+      textarea.addEventListener('dragleave', function(e) {
+        textarea.style.border = '';
+      });
+      textarea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        textarea.style.border = '';
+        const file = e.dataTransfer.files[0];
+        if (file && file.name.endsWith('.md')) {
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            textarea.value = evt.target.result;
+          };
+          reader.readAsText(file);
+        } else {
+          alert('Please drop a markdown (.md) file.');
+        }
+      });
+
+      // Start slideshow on button click
+      document.getElementById('start-slideshow').onclick = function() {
+        var source = textarea.value;
+        if (!source.trim()) {
+          alert('Please enter or load some markdown first.');
+          return;
+        }
+        // Remove textarea and button, then start slideshow
+        textarea.style.display = 'none';
+        this.style.display = 'none';
+        var slideshow = remark.create({ source: source });
+      };
+    </script>
+  </body>
+</html>
